@@ -3,6 +3,7 @@ A background process for macOS to run programs at sleep and wake up.
 
 The SleepTight project includes:
 * A modified version of SleepWatcher 2.2.1 (including C source code, makefile and plist configuration), originally developed by Bernhard Baehr.
+* [Scripts to eject and reconnect external disks](example/Readme.md).
 
 SleepWatcher is a command line daemon tool to execute commands when the Mac sleeps or wakes up. See https://www.bernhard-baehr.de/ for more information about the original SleepWatcher.
 
@@ -34,7 +35,7 @@ There are 4 items in the above array:
 
 You should either save the files (e.g. shell scripts) you would like to be executed as the `~/.sleep` and `~/.wakeup`, or change them to the paths of you executable files. The `make install` command does not create these files. You can also add more options by adding another `<string>...</string>` to the array.
 
-See the [SleepWatcher Manual](sleepwatcher_manual.html) for all the available options.
+See the [SleepWatcher Manual](https://htmlpreview.github.io/?https://github.com/qiuosier/SleepTight/blob/master/sleepwatcher_manual.html) for all the available options.
 
 By default, the logs are sent to syslog. For debug or logging purpose, you can add the following into the `<dict>` part so that the standard outputs and errors are saved into the file you specified (`/path/to/log/file.log`).
 ```
