@@ -3,7 +3,7 @@ A background process for macOS to run programs at sleep and wake up.
 
 The SleepTight project includes:
 * A modified version of SleepWatcher 2.2.1 (including C source code, makefile and plist configuration), originally developed by Bernhard Baehr.
-* [Scripts to eject and reconnect external disks](example/Readme.md).
+* [Scripts to eject and reconnect external disks](example).
 
 SleepWatcher is a command line daemon tool to execute commands when the Mac sleeps or wakes up. See https://www.bernhard-baehr.de/ for more information about the original SleepWatcher.
 

@@ -9,4 +9,8 @@ This directory contains two scripts:
 * `sleep.sh` ejects a particular disk (by UUID)
 * `wake.sh` unlocks an encrypted disk (by UUID) and re-mounts it.
 
-These scripts are test on macOS Mojave 10.14.
+These scripts are test on macOS Mojave 10.14 with an encrypted disk. To use the scripts:
+1. Replace "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" with the Logical Volume UUID of your disk.
+2. Replace "YOUR_PASS_PHRASE" with the passphrase to unlock the disk. Or, remove the unlocking process if your disk is not encrypted.
+
+The Logical Volume (LV) UUID can be found in "About This Mac" > "System Report..." > "Hardware" > "Storage".
