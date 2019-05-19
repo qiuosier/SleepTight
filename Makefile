@@ -1,4 +1,18 @@
 #
+# Sleep Tight, Part of Project Gemini.
+# 2019 Qiu Qin.
+# 
+# This file is modified from the make file for sleepwatcher by Bernhard Baehr.
+# Modifications:
+# 18.5.2019 qq	Added 64-bit only build. Use "make sleepwatcher64" to build 64-bit only binary.
+#				Changed manual directory to /usr/local/share/man.
+#				Remove "-o" and "-g" options in "make install".
+# 				"make install" now works for single user without root permission.
+# 				For newer macOS, use the following commands to create a symlink for libgcc_s
+#				$ cd /usr/local/lib
+#				$ sudo ln -s ../../lib/libSystem.B.dylib libgcc_s.10.4.dylib
+# 
+#
 #	Makefile for sleepwatcher
 #
 #	21.11.2004 bb	created
@@ -19,13 +33,18 @@ CFLAGS_X86_64= -O3 -prebind -mmacosx-version-min=10.4 -arch x86_64
 LIBS= -framework IOKit -framework CoreFoundation
 
 BINDIR=/usr/local/sbin
-MANDIR=/usr/local/man
+MANDIR=/usr/local/share/man
 
 sleepwatcher: sleepwatcher.c
 	$(CC) $(CFLAGS_I386) -o sleepwatcher.i386 sleepwatcher.c $(LIBS)
 	$(CC) $(CFLAGS_X86_64) -o sleepwatcher.x86_64 sleepwatcher.c $(LIBS)
 	lipo -create sleepwatcher.i386 sleepwatcher.x86_64 -output sleepwatcher
 	rm sleepwatcher.i386 sleepwatcher.x86_64
+
+sleepwatcher64: sleepwatcher.c
+	$(CC) $(CFLAGS_X86_64) -o sleepwatcher.x86_64 sleepwatcher.c $(LIBS)
+	lipo -create sleepwatcher.x86_64 -output sleepwatcher
+	rm sleepwatcher.x86_64
 
 fat: sleepwatcher sleepwatcher.ppc
 	lipo -create sleepwatcher sleepwatcher.ppc -output sleepwatcher.fat
@@ -37,9 +56,9 @@ sleepwatcher.ppc: sleepwatcher.c
 
 install: sleepwatcher sleepwatcher.8
 	mkdir -p $(BINDIR)
-	install -o root -g wheel -m 755 sleepwatcher $(BINDIR)
+	install -m 755 sleepwatcher $(BINDIR)
 	mkdir -p $(MANDIR)/man8
-	install -o root -g wheel -m 644 sleepwatcher.8 $(MANDIR)/man8
+	install -m 644 sleepwatcher.8 $(MANDIR)/man8
 
 clean:
 	rm -f sleepwatcher
