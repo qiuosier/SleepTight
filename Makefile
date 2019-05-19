@@ -4,6 +4,7 @@
 # 
 # This file is modified from the make file for sleepwatcher by Bernhard Baehr.
 # Modifications:
+# 19.5.2019 qq	Install and load plist file.
 # 18.5.2019 qq	Added 64-bit only build. Use "make sleepwatcher64" to build 64-bit only binary.
 #				Changed manual directory to /usr/local/share/man.
 #				Remove "-o" and "-g" options in "make install".
@@ -34,6 +35,9 @@ LIBS= -framework IOKit -framework CoreFoundation
 
 BINDIR=/usr/local/sbin
 MANDIR=/usr/local/share/man
+AGENTDIR=~/Library/LaunchAgents
+PLIST=de.bernhard-baehr.sleepwatcher.plist
+AGENTNAME=$(shell basename $(PLIST))
 
 sleepwatcher: sleepwatcher.c
 	$(CC) $(CFLAGS_I386) -o sleepwatcher.i386 sleepwatcher.c $(LIBS)
@@ -59,6 +63,9 @@ install: sleepwatcher sleepwatcher.8
 	install -m 755 sleepwatcher $(BINDIR)
 	mkdir -p $(MANDIR)/man8
 	install -m 644 sleepwatcher.8 $(MANDIR)/man8
+	install -m 644 $(PLIST) $(AGENTDIR)
+	launchctl unload ~/Library/LaunchAgents/$(AGENTNAME)
+	launchctl load ~/Library/LaunchAgents/$(AGENTNAME)
 
 clean:
 	rm -f sleepwatcher
