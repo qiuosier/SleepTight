@@ -1,4 +1,10 @@
-/*
+/*  
+ * Sleep Tight, Part of Project Gemini.
+ * 2019 Qiu Qin.
+ * 
+ * This program is modified from the sleepwatcher by Bernhard Baehr.
+ * 5/18/2019, Add time stamp messages before executing sleep and wakeup commands.
+ * 
  *	sleepwatcher
  *
  *	Copyright (c) 2002-2019 Bernhard Baehr
@@ -30,6 +36,7 @@
 #include <syslog.h>
 #include <unistd.h>
 #include <libgen.h>
+#include <time.h>
 #include <sys/wait.h>
 
 #include <mach/mach_port.h>
@@ -113,6 +120,8 @@ static char *setstr (char *oldstr, char *newstr)
 {
 	if (oldstr)
 		free (oldstr);
+	// strdup
+	// https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/strdup.3.html
 	return (newstr ? strdup(newstr) : NULL);
 }
 
@@ -120,12 +129,13 @@ static char *setstr (char *oldstr, char *newstr)
 void message (int priority, const char *msg, ...)
 {
 	va_list ap;
-	FILE    *out;
-	
+	FILE *out;
+ 
 	if (args.verbose || priority < LOG_INFO) {
 		va_start (ap, msg);
 		if (args.daemon) {
 			openlog (args.progname, LOG_PID, LOG_DAEMON);
+			// https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/vsyslog.3.html
 			vsyslog (priority, msg, ap);
 			closelog ();
 		} else {
@@ -494,6 +504,7 @@ static void parseArgs (int argc, char * const *argv)
 
 	args.argc = argc;
 	args.argv = argv;
+	// See https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/basename.3.html
 	args.progname = basename(*argv);
 	args.verbose = 0;
 	args.daemon = 0;
@@ -679,6 +690,14 @@ void powerCallback (void *rootPort, io_service_t y, natural_t msgType, void *msg
 	int	result;
 	char	*s;
 
+	time_t rawtime;
+    struct tm * timeinfo;
+	time (&rawtime);
+	timeinfo = localtime (&rawtime);
+	// Local time 
+	// See also: http://www.cplusplus.com/reference/ctime/localtime/
+	
+
 /*
 	fprintf (stderr, "powerCallback: message_type %08lx, arg %08lx\n",
 		(long unsigned int) msgType, (long  unsigned int) msgArgument);
@@ -704,17 +723,18 @@ void powerCallback (void *rootPort, io_service_t y, natural_t msgType, void *msg
 			IOAllowPowerChange (* (io_connect_t *) rootPort, (long) msgArgument);
 		break;
 	case kIOMessageSystemWillSleep :
+		message (LOG_INFO, "falling into sleep: %s", asctime (timeinfo));
 		if (args.sleepcommand)
 			message (LOG_INFO, "sleep: %s: %d\n", args.sleepcommand, system(args.sleepcommand));
 		IOAllowPowerChange (* (io_connect_t *) rootPort, (long) msgArgument);
 		break;
 	case kIOMessageSystemWillNotSleep :
+		message (LOG_INFO, "can't sleep: %s", asctime (timeinfo));
 		if (args.cantsleepcommand)
 			message (LOG_INFO, "can't sleep: %s: %d\n", args.cantsleepcommand, system(args.cantsleepcommand));
-		else
-			message (LOG_INFO, "can't sleep\n");
 		break;
 	case kIOMessageSystemHasPoweredOn :
+		message (LOG_INFO, "waking up: %s", asctime (timeinfo));
 		setupIdleTimer ();
 		if (args.wakeupcommand)
 			message (LOG_INFO, "wakeup: %s: %d\n", args.wakeupcommand, system(args.wakeupcommand));
