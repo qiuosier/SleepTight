@@ -1,0 +1,292 @@
+<!-- Creator     : groff version 1.19.2 -->
+<!-- CreationDate: Sun May 19 13:26:33 2019 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p     { margin-top: 0; margin-bottom: 0; }
+       pre   { margin-top: 0; margin-bottom: 0; }
+       table { margin-top: 0; margin-bottom: 0; }
+</style>
+<title></title>
+</head>
+<body>
+
+<hr>
+
+
+<p valign="top">sleepwatcher(8) BSD System Manager&rsquo;s
+Manual sleepwatcher(8)</p>
+
+<p style="margin-top: 1em" valign="top"><b>NAME</b></p>
+
+<p style="margin-left:8%;"><b>sleepwatcher</b> &mdash;
+daemon to monitor sleep, wakeup and idleness of a Mac</p>
+
+
+<p style="margin-top: 1em" valign="top"><b>SYNOPSIS</b></p>
+
+<p style="margin-left:28%;"><b>sleepwatcher</b>
+[<b>&minus;n</b>] [<b>&minus;v</b>] [<b>&minus;V</b>]
+[<b>&minus;d</b>] [<b>&minus;g</b>]
+[<b>&minus;f&nbsp;</b><i>configfile</i>]
+[<b>&minus;p&nbsp;</b><i>pidfile</i>] [</p>
+
+<p valign="top"><b>&minus;a</b>[allowsleepcommand] ]
+[<b>&minus;c&nbsp;</b><i>cantsleepcommand</i>]
+[<b>&minus;s&nbsp;</b><i>sleepcommand</i>]
+[<b>&minus;w&nbsp;</b><i>wakeupcommand</i>]
+[<b>&minus;D&nbsp;</b><i>displaydimcommand</i>]
+[<b>&minus;E&nbsp;</b><i>displayundimcommand</i>]
+[<b>&minus;S&nbsp;</b><i>displaysleepcommand</i>]
+[<b>&minus;W&nbsp;</b><i>displaywakeupcommand</i>] [ <b><br>
+&minus;t</b> <i>timeout</i> <b>&minus;i</b>
+<i>idlecommand</i>
+[<b>&minus;R&nbsp;</b><i>idleresumecommand</i>] ]
+[<b>&minus;b&nbsp;</b><i>break&nbsp;</i><b>&minus;r&nbsp;</b><i>resumecommand</i>]
+[<b>&minus;P&nbsp;</b><i>plugcommand</i>]
+[<b>&minus;U&nbsp;</b><i>unplugcommand</i>]</p>
+
+
+<p style="margin-top: 1em" valign="top"><b>DESCRIPTION</b></p>
+
+<p style="margin-left:8%;"><b>sleepwatcher</b> is a program
+that monitors sleep, wakeup and idleness of a Mac. It can be
+used to execute a Unix command when the Mac or the display
+of the Mac goes to sleep mode or wakes up, after a given
+time without user interaction or when the user resumes
+activity after a break or when the power supply of a Mac
+notebook is attached or detached. It also can send the Mac
+to sleep mode or retrieve the time since last user
+activity.</p>
+
+<p style="margin-left:8%; margin-top: 1em">Command line
+options:</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;n</b>,
+<b>&minus;&minus;now</b></p>
+
+<p style="margin-left:22%;">Sleep now and exit, ignoring
+other options.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;v</b>,
+<b>&minus;&minus;version</b></p>
+
+<p style="margin-left:22%;">Display version and copyright
+information and exit.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;V</b>,
+<b>&minus;&minus;verbose</b></p>
+
+<p style="margin-left:22%;">Log any action
+<b>sleepwatcher</b> performs, either to stdout or, when
+running as daemon, to the syslog.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;d</b>,
+<b>&minus;&minus;daemon</b></p>
+
+<p style="margin-left:22%;">Run as background daemon.
+Don&rsquo;t use this option when starting
+<b>sleepwatcher</b> via launchd(8).</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;g</b>,
+<b>&minus;&minus;getidletime</b></p>
+
+<p style="margin-left:22%;">Print the time (in 0.1 seconds)
+of no keyboard or mouse activity to stdout and exit,
+ignoring other options.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;f</b>
+<i>configfile</i>, <b>&minus;&minus;config</b>
+<i>configfile</i></p>
+
+<p style="margin-left:22%;">Read additional configuration
+options from <i>configfile</i>. <i>configfile</i> contains
+options in the form <b>option [ = value ]</b> where
+<b>option</b> is one of the long command line options
+(without --). <b>sleepwatcher</b> rereads its configuration
+file when it receives a hangup signal, SIGHUP.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;p</b>
+<i>pidfile</i>, <b>&minus;&minus;pidfile</b>
+<i>pidfile</i></p>
+
+<p style="margin-left:22%;">Write the process id of
+<b>sleepwatcher</b> to <i>pidfile</i>.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;a</b>[
+<i><br>
+allowsleepcommand</i>],
+<b>&minus;&minus;allowsleep</b>[=<i>allowsleepcommand</i>]</p>
+
+<p style="margin-left:22%;">Allow the Mac to idle sleep
+only when <i>allowsleepcommand</i> returns a zero exit code.
+Without <i>allowsleepcommand</i>, this option prevents idle
+sleep at all. When the <b>&minus;a</b> option is not used at
+all, <b>sleepwatcher</b> allows idle sleep unconditionally.
+(Note: no space after the <b>-a</b>.)</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;c</b>
+<i>cantsleepcommand</i>, <b>&minus;&minus;cantsleep</b>
+<i>cantsleepcommand</i></p>
+
+<p style="margin-left:22%;">Execute <i>cantsleepcommand</i>
+when the Mac retracts an attempt to sleep that was
+previously allowed by the <b>-a</b> option, but vetoed by
+another process that wants to prevent idle sleep. Note that
+the kernel notifies <b>sleepwatcher</b> about the retracted
+sleep only when it previously asked it if sleeping is
+allowed. There might be canceled idle sleep attempts without
+the <b>-a</b> and <b>-c</b> commands executed at all.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;s</b>
+<i>sleepcommand</i>, <b>&minus;&minus;sleep</b>
+<i>sleepcommand</i></p>
+
+<p style="margin-left:22%;">Execute <i>sleepcommand</i>
+when the Mac is put to sleep mode. <i>sleepcommand</i> must
+not take longer than 15 seconds because after this timeout
+the sleep mode is forced by the system.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;w</b>
+<i>wakeupcommand</i>, <b>&minus;&minus;wakeup</b>
+<i>wakeupcommand</i></p>
+
+<p style="margin-left:22%;">Execute <i>wakeupcommand</i>
+when the Mac wakes up from sleep mode.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;D</b>
+<i>displaydimcommand,</i> <b>&minus;&minus;displaydim</b>
+<i>displaydimcommand</i></p>
+
+<p style="margin-left:22%;">Execute
+<i>displaydimcommand</i> when the display of the Mac is
+dimmed. Note that the <i>displaydimcommand</i> is executed
+when the Mac goes to sleep mode, too.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;E</b>
+<i>displayundimcommand,</i>
+<b>&minus;&minus;displayundim</b>
+<i>displayundimcommand</i></p>
+
+<p style="margin-left:22%;">Execute
+<i>displayundimcommand</i> when the display of the Mac is
+undimmed without having gone to sleep. Note that the
+<i>displayundimcommand</i> is not executed when the Mac or
+the display of the Mac wakes up from sleep mode.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;S</b>
+<i>displaysleepcommand,</i>
+<b>&minus;&minus;displaysleep</b>
+<i>displaysleepcommand</i></p>
+
+<p style="margin-left:22%;">Execute
+<i>displaysleepcommand</i> when the display of the Mac is
+put to sleep mode.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;W</b>
+<i>displaywakeupcommand,</i>
+<b>&minus;&minus;displaywakeup</b>
+<i>displaywakeupcommand</i></p>
+
+<p style="margin-left:22%;">Execute
+<i>displaywakeupcommand</i> when the display of the Mac
+wakes up from sleep mode. Note that the
+<i>displaywakeupcommand</i> is executed when the Mac wakes
+up from sleep mode, too.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;t</b>
+<i>timeout</i>, <b>&minus;&minus;timeout</b>
+<i>timeout</i></p>
+
+<p style="margin-left:22%;">Set the <i>timeout</i> (in 0.1
+seconds) for the <b>-i</b> option, i. e. execute
+<i>idlecommand</i> after this time of no user
+interactivity.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;i</b>
+<i>idlecommand</i>, <b>&minus;&minus;idle</b>
+<i>idlecommand</i></p>
+
+<p style="margin-left:22%;">Execute <i>idlecommand</i>
+after the time of no user interactivity set with the
+<b>-t</b> option.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;R</b>
+<i>idleresumecommand,</i> <b>&minus;&minus;idleresume</b>
+<i>idleresumecommand</i></p>
+
+<p style="margin-left:22%;">Execute
+<i>idleresumecommand</i> when the user resumes input after
+the <b>-i</b> command was executed due to an idle time.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;b</b>
+<i>breakduration</i>, <b>&minus;&minus;break</b>
+<i>breakduration</i></p>
+
+<p style="margin-left:22%;">Set the <i>breakduration</i>
+(in 0.1 seconds) for the <b>-r</b> option, i. e. execute
+<i>resumecommand</i> when the user resumes input after a
+break of at least this duration.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;r</b>
+<i>resumecommand</i>, <b>&minus;&minus;resume</b>
+<i>resumecommand</i></p>
+
+<p style="margin-left:22%;">Execute <i>resumecommand</i>
+when the user resumes keyboard or mouse activity after a
+break with a duration given with the <b>-b</b> option.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;P</b>
+<i>plugcommand</i>, <b>&minus;&minus;plug</b>
+<i>plugcommand</i></p>
+
+<p style="margin-left:22%;">Execute <i>plugcommand</i> when
+a Mac notebook is connected to the power supply.</p>
+
+<p style="margin-top: 1em" valign="top"><b>&minus;U</b>
+<i>unplugcommand</i>, <b>&minus;&minus;unplug</b>
+<i>unplugcommand</i></p>
+
+<p style="margin-left:22%;">Execute <i>unplugcommand</i>
+when a Mac notebook is disconnected from the power
+supply.</p>
+
+<p style="margin-top: 1em" valign="top"><b>SEE ALSO</b></p>
+
+<p style="margin-left:8%;">pmset(1), launchd(8),
+SystemStarter(8)</p>
+
+<p style="margin-top: 1em" valign="top"><b>BUGS</b></p>
+
+<p style="margin-left:8%;">The <b>-t -i</b> and <b>-b
+-r</b> options only work when the Mac OS X GUI is running,
+so they cannot be used when <b>sleepwatcher</b> is started
+as a system-wide launchd(8) agent during system startup.</p>
+
+<p style="margin-left:8%; margin-top: 1em">Any user with
+execute permission for <b>sleepwatcher</b> can send the Mac
+to sleep mode with the <b>-n</b> option, making the system
+unavailable for other (remote) users.</p>
+
+
+<p style="margin-top: 1em" valign="top"><b>ACKNOWLEDGEMENTS</b></p>
+
+<p style="margin-left:8%;">Thanks to Daniel Griscom for the
+idea and code for the deny sleep feature. Thanks to Darren
+Creutz for the idea and code for the display sleep support.
+Thanks to Michael Lee for the ideas for idleness handling
+within <b>sleepwatcher</b>. Thanks to Brian Jenkins for the
+idea and code for the power supply feature. And thanks to
+Louis Pan for the idea and code for the can&rsquo;t sleep
+callback.</p>
+
+<p style="margin-left:8%; margin-top: 1em">Darwin
+May&nbsp;19, 2019 Darwin</p>
+<hr>
+</body>
+</html>

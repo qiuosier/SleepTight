@@ -32,3 +32,6 @@
 *.dSYM/
 
 .vscode/
+private/
+
+\.DS_Store
