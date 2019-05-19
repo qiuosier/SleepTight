@@ -1,5 +1,8 @@
 # SleepTight
-A background process for macOS to run program at sleep and wake up. The SleepTight project includes a modified/customized version of SleepWatcher 2.2.1, originally developed by Bernhard Baehr.
+A background process for macOS to run programs at sleep and wake up. 
+
+The SleepTight project includes:
+* A modified version of SleepWatcher 2.2.1 (including C source code, makefile and plist configuration), originally developed by Bernhard Baehr.
 
 SleepWatcher is a command line daemon tool to execute commands when the Mac sleeps or wakes up. See https://www.bernhard-baehr.de/ for more information about the original SleepWatcher.
 
@@ -59,8 +62,8 @@ $ make install
 ```
 The above command will:
 * Install the sleepwatcher binary to `/usr/local/sbin`.
-* Install the sleepwatcher manual to `/usr/local/share/man`.
-* Install the `de.bernhard-baehr.sleepwatcher.plist` to `~\Library\LaunchAgents`.
+* Install the sleepwatcher manual to `/usr/local/share/man/man8`.
+* Install the `de.bernhard-baehr.sleepwatcher.plist` to `~/Library/LaunchAgents`.
 
 You can also set the path to your customized `.plist` file by:
 ```
@@ -72,7 +75,13 @@ Remove the binary from source code folder:
 $ make clean
 ```
 
-## Known Issue
-launchd ouputs "This service is defined to be constantly running and is inherently inefficient." when the process starts.
+## Uninstall
+To uninstall SleepWatcher, remove the following 3 files:
+* Binary, `/usr/local/sbin/sleepwatcher`.
+* Manual, `/usr/local/share/man/man8/sleepwatcher.8`.
+* Launch Agent, `~/Library/LaunchAgents/de.bernhard-baehr.sleepwatcher.plist`.
 
-2019 Qiu Qin.
+## Known Issue
+launchd outputs "This service is defined to be constantly running and is inherently inefficient." when the process starts.
+
+2019 Qiu Qin. SleepTight is part of Qiu's Gemini Project.

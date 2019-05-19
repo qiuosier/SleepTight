@@ -33,10 +33,16 @@ CFLAGS_I386= -O3 -prebind -mmacosx-version-min=10.4 -arch i386
 CFLAGS_X86_64= -O3 -prebind -mmacosx-version-min=10.4 -arch x86_64 
 LIBS= -framework IOKit -framework CoreFoundation
 
+# Binary directory
 BINDIR=/usr/local/sbin
+# Manual directory
 MANDIR=/usr/local/share/man
+# LaunchAgent directory
 AGENTDIR=~/Library/LaunchAgents
+# The .plist file for launchd
 PLIST=de.bernhard-baehr.sleepwatcher.plist
+# Gets the basename (filename) of the .plist file.
+# This may not be the same as $(PLIST) if use supply PLIST=path/to/file in make install
 AGENTNAME=$(shell basename $(PLIST))
 
 sleepwatcher: sleepwatcher.c
