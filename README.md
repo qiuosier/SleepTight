@@ -31,7 +31,7 @@ There are 4 items in the above array:
 1. The sleepwatcher binary location.
 2. `-V`, log any action sleepwatcher performs.
 3. `-s ~/.sleep`, execute `~/.sleep` file when the system is going into sleep.
-4. `-w ~/.wakeup`, execute `~/.wakeup` file when the system is going into sleep.
+4. `-w ~/.wakeup`, execute `~/.wakeup` file when the system is waking up from sleep.
 
 You should either save the files (e.g. shell scripts) you would like to be executed as the `~/.sleep` and `~/.wakeup`, or change them to the paths of you executable files. The `make install` command does not create these files. You can also add more options by adding another `<string>...</string>` to the array.
 
